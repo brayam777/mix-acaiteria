@@ -1,0 +1,13 @@
+{
+  "name": "mix-acaiteria-tests",
+  "private": true,
+  "type": "module",
+  "description": "Testes do banco (PGlite + stubs do Supabase) e servidor de teste das telas. Não vai pro deploy.",
+  "scripts": {
+    "test": "node db.test.mjs",
+    "mock": "node mockserver.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.2.17"
+  }
+}

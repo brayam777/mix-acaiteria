@@ -78,3 +78,19 @@ node serve.cjs
 ```
 
 Abre `http://localhost:8087/?loja=mix` (usa o banco real da Mix).
+
+## Continuar em outro computador
+
+Precisa de: Git, Node.js 18+, [Supabase CLI](https://supabase.com/docs/guides/cli) e (opcional) GitHub CLI.
+
+```
+git clone https://github.com/brayam777/mix-acaiteria.git
+cd mix-acaiteria
+supabase login
+supabase link --project-ref lezmpssydxuhxoqlwtoc
+cd tests && npm install && npm test
+```
+
+- Publicar: `git push` (a Vercel publica sozinha). Não precisa da Vercel CLI.
+- Mudança no banco: nova migração em `supabase/migrations/` → `npm test` → `supabase db query --linked -f <arquivo>`.
+- Contexto completo pro Claude Code: `CLAUDE.md` (ele lê sozinho ao abrir a pasta).
