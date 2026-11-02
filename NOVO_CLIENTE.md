@@ -11,6 +11,7 @@ próprio da Mix**: `lezmpssydxuhxoqlwtoc` (conta brayamfelipe02 mix). Nada aqui 
 - [x] Pedido pelo WhatsApp do cliente (link wa.me, igual Descascaê) + número do dia — migração `20261008100000_order_number.sql` aplicada
 - [ ] (Opcional) WhatsApp automático via uazapi — desligado, ver abaixo
 - [x] Deploy na Vercel: projeto `mix-acaiteria` → https://mix-acaiteria.vercel.app (domínio próprio: pendente)
+- [x] Deploy automático: todo `git push` na `main` de https://github.com/brayam777/mix-acaiteria publica sozinho na Vercel
 - [ ] URL do site em Supabase → Authentication → URL Configuration
 - [ ] Shirley criar a conta do painel com a chave de configuração
 
