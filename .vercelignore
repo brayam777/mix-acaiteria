@@ -1,0 +1,7 @@
+# Nunca subir pro deploy público:
+*.local
+supabase
+serve.cjs
+serve.ps1
+referencias
+NOVO_CLIENTE.md

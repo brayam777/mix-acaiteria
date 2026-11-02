@@ -1,0 +1,9 @@
+# Deploy / segredos locais
+.vercel
+.env*
+*.local
+
+# Supabase CLI (link local do projeto)
+supabase/.temp
+
+node_modules

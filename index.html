@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cardápio — Açaiteria</title>
+<meta name="description" content="Cardápio digital — monte seu açaí do seu jeito e peça para entrega ou retirada." />
+<meta name="theme-color" content="#5b2a86" />
+<link rel="icon" href="img/icon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#top" class="brand">
+      <span class="brand-emoji" id="brandEmoji">🍇</span>
+      <img class="brand-logo-img" id="brandLogoImg" alt="" hidden />
+      <span class="brand-name" id="brandName">Açaiteria</span>
+    </a>
+    <a href="confirmation.html" class="header-order-status-link">Status do pedido</a>
+    <button class="cart-btn" id="cartBtn" type="button" aria-label="Abrir carrinho">
+      <svg viewBox="0 0 24 24" class="icon"><path d="M7 4h-2l-1 2v1h2l3.6 7.6-1.4 2.4c-.2.5 0 1 .5 1h11v-2h-9.4l1-2h6.5c.4 0 .8-.2.9-.6l3-6.6c.2-.5-.1-1-.6-1h-13.6l-.9-2z"/><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg>
+      <span id="cartCount" class="cart-count" hidden>0</span>
+    </button>
+  </div>
+</header>
+
+<div id="storeClosedBanner" class="store-closed-banner" hidden></div>
+
+<main class="container">
+  <section id="top" class="hero">
+    <img class="hero-logo" id="heroLogo" alt="" hidden />
+    <h1>Monte do seu jeito!</h1>
+    <p>Escolha o tamanho, as frutas e os adicionais e finalize pra receber em casa ou retirar.</p>
+    <span class="delivery-pill" id="deliveryPill" hidden></span>
+  </section>
+
+  <nav class="category-filters" id="categoryFilters"></nav>
+
+  <section id="menuSections"><p class="catalog-empty">Carregando cardápio...</p></section>
+</main>
+
+<div id="cartDrawer" class="cart-drawer" hidden>
+  <div class="cart-drawer-overlay" id="cartOverlay"></div>
+  <div class="cart-drawer-panel">
+    <div class="cart-drawer-header">
+      <h2>Seu pedido</h2>
+      <button id="cartCloseBtn" class="icon-btn" aria-label="Fechar carrinho">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-drawer-footer">
+      <div class="cart-subtotal-row">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">R$ 0,00</span>
+      </div>
+      <button id="checkoutBtn" class="btn btn-primary btn-block" disabled>Finalizar pedido</button>
+    </div>
+  </div>
+</div>
+
+<div id="productModal" class="modal" hidden>
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal-panel" role="dialog" aria-modal="true">
+    <button id="modalCloseBtn" class="icon-btn modal-close" aria-label="Fechar">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> <span id="footerStoreName">Açaiteria</span></span>
+    <div class="footer-right">
+      <a href="admin.html" class="footer-admin-link">área da loja</a>
+      <span class="footer-brand-badge" id="brandBadge"></span>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

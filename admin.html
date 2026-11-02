@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Painel da loja — Anotei Aí</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#5b2a86" />
+<link rel="icon" href="img/icon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" id="adminBrandMark"></span>
+      <span class="brand-name">Anotei Aí</span>
+    </a>
+    <a href="index.html" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Ver cardápio</a>
+  </div>
+</header>
+
+<main class="container admin-main">
+
+  <section id="loginView" class="admin-card" hidden>
+
+    <div id="authLogin">
+      <h1 class="section-title admin-title">Entrar</h1>
+      <p class="admin-sub">Entre com o e-mail e a senha da sua conta.</p>
+      <form id="loginForm" class="admin-form">
+        <input type="email" id="loginEmail" placeholder="E-mail" autocomplete="email" required />
+        <input type="password" id="loginPassword" placeholder="Senha" autocomplete="current-password" required />
+        <button type="submit" class="btn btn-primary">Entrar</button>
+      </form>
+      <p id="loginMessage" class="admin-message"></p>
+      <div class="auth-links">
+        <button type="button" class="auth-link" id="showForgotBtn">Esqueci minha senha</button>
+        <button type="button" class="auth-link" id="showSignupBtn" hidden>Criar conta</button>
+      </div>
+    </div>
+
+    <div id="authSignup" hidden>
+      <h1 class="section-title admin-title">Criar conta</h1>
+      <p class="admin-sub">Primeira vez configurando essa loja. Peça a chave de configuração pra quem te entregou o sistema.</p>
+      <form id="signupForm" class="admin-form">
+        <input type="email" id="signupEmail" placeholder="E-mail" autocomplete="email" required />
+        <input type="password" id="signupPassword" placeholder="Crie uma senha (6+)" autocomplete="new-password" minlength="6" required />
+        <input type="password" id="signupPasswordConfirm" placeholder="Confirme a senha" autocomplete="new-password" required />
+        <input type="text" id="signupSetupKey" placeholder="Chave de configuração" required />
+        <button type="submit" class="btn btn-primary">Criar conta</button>
+      </form>
+      <p id="signupMessage" class="admin-message"></p>
+      <button type="button" class="auth-link" id="backToLoginFromSignupBtn">Já tenho conta — entrar</button>
+    </div>
+
+    <div id="authForgot" hidden>
+      <h1 class="section-title admin-title">Recuperar senha</h1>
+      <p class="admin-sub">Mandamos um link pro seu e-mail pra você definir uma senha nova.</p>
+      <form id="forgotForm" class="admin-form">
+        <input type="email" id="forgotEmail" placeholder="E-mail" autocomplete="email" required />
+        <button type="submit" class="btn btn-primary">Enviar link</button>
+      </form>
+      <p id="forgotMessage" class="admin-message"></p>
+      <button type="button" class="auth-link" id="backToLoginFromForgotBtn">Voltar</button>
+    </div>
+
+    <div id="authReset" hidden>
+      <h1 class="section-title admin-title">Definir nova senha</h1>
+      <p class="admin-sub">Escolha uma nova senha pra sua conta.</p>
+      <form id="resetForm" class="admin-form">
+        <input type="password" id="resetPassword" placeholder="Nova senha (6+)" autocomplete="new-password" minlength="6" required />
+        <input type="password" id="resetPasswordConfirm" placeholder="Confirme a nova senha" autocomplete="new-password" required />
+        <button type="submit" class="btn btn-primary">Salvar nova senha</button>
+      </form>
+      <p id="resetMessage" class="admin-message"></p>
+    </div>
+
+    <div id="authClaimPending" hidden>
+      <h1 class="section-title admin-title">Finalizar cadastro</h1>
+      <p class="admin-sub">Sua conta já está confirmada. Informe de novo a chave de configuração pra liberar o acesso ao painel.</p>
+      <form id="claimForm" class="admin-form">
+        <input type="text" id="claimSetupKey" placeholder="Chave de configuração" required />
+        <button type="submit" class="btn btn-primary">Liberar acesso</button>
+      </form>
+      <p id="claimMessage" class="admin-message"></p>
+    </div>
+
+    <div id="authDenied" hidden>
+      <h1 class="section-title admin-title">Sem acesso</h1>
+      <p class="admin-sub">Essa conta não tem acesso a este painel. Se você é o dono da loja, use "Esqueci minha senha" pra recuperar o acesso da conta certa.</p>
+      <button type="button" class="btn btn-outline btn-sm" id="deniedLogoutBtn">Sair</button>
+    </div>
+
+  </section>
+
+  <section id="panelView" class="admin-panel" hidden>
+    <div class="admin-panel-header">
+      <div>
+        <h1 class="section-title admin-title">Painel da loja</h1>
+        <p class="admin-sub" id="panelStoreLabel" style="margin:0"></p>
+      </div>
+      <button id="logoutBtn" class="btn btn-outline btn-sm">Sair</button>
+    </div>
+
+    <nav class="admin-tabs">
+      <button class="admin-tab-btn active" data-tab="orders">Pedidos</button>
+      <button class="admin-tab-btn" data-tab="cash">Caixa</button>
+      <button class="admin-tab-btn" data-tab="catalog">Cardápio</button>
+      <button class="admin-tab-btn" data-tab="settings">Configurações</button>
+    </nav>
+
+    <!-- ---------- Pedidos ---------- -->
+    <section id="tabOrders" class="admin-tab-panel">
+      <div class="orders-toolbar">
+        <div class="orders-counters" id="ordersCounters"></div>
+        <button type="button" class="btn btn-accent btn-sm" id="enableAlertsBtn">🔔 Ativar som de pedido novo</button>
+      </div>
+      <div class="orders-board" id="ordersBoard"><p class="admin-list-empty">Carregando pedidos...</p></div>
+    </section>
+
+    <!-- ---------- Caixa ---------- -->
+    <section id="tabCash" class="admin-tab-panel" hidden>
+      <div class="cash-toolbar">
+        <div class="cash-periods" id="cashPeriods">
+          <button type="button" class="chip-btn active" data-period="today">Hoje</button>
+          <button type="button" class="chip-btn" data-period="7d">7 dias</button>
+          <button type="button" class="chip-btn" data-period="month">Este mês</button>
+          <button type="button" class="chip-btn" data-period="lastmonth">Mês passado</button>
+          <button type="button" class="chip-btn" data-period="custom">Escolher datas</button>
+        </div>
+        <div class="cash-custom" id="cashCustom" hidden>
+          <input type="date" id="cashFrom" aria-label="De" />
+          <span>até</span>
+          <input type="date" id="cashTo" aria-label="Até" />
+          <button type="button" class="btn btn-primary btn-sm" id="cashApplyCustom">Ver</button>
+        </div>
+      </div>
+      <p class="admin-sub" id="cashPeriodLabel"></p>
+      <p id="cashMessage" class="admin-message"></p>
+
+      <div class="cash-kpis" id="cashKpis"></div>
+
+      <div class="cash-actions">
+        <button type="button" class="btn btn-primary" id="addExpenseBtn">− Lançar despesa</button>
+        <button type="button" class="btn btn-outline" id="addIncomeBtn">+ Lançar entrada (balcão etc.)</button>
+        <button type="button" class="btn btn-outline btn-sm" id="exportCsvBtn">Exportar CSV</button>
+      </div>
+
+      <div class="cash-grid">
+        <div class="admin-card">
+          <h2 class="admin-card-title">Fechamento por forma de pagamento</h2>
+          <p class="admin-sub">Pra conferir a gaveta e a maquininha. Entradas = pedidos do cardápio aceitos + entradas lançadas.</p>
+          <div id="cashByPayment"></div>
+        </div>
+        <div class="admin-card">
+          <h2 class="admin-card-title">Despesas por categoria</h2>
+          <div id="cashByCategory"></div>
+        </div>
+      </div>
+
+      <div class="admin-card admin-card-wide">
+        <h2 class="admin-card-title">Vendas × despesas por dia</h2>
+        <div id="cashChart" class="cash-chart"></div>
+      </div>
+
+      <div class="cash-grid">
+        <div class="admin-card">
+          <h2 class="admin-card-title">Lançamentos do período</h2>
+          <div id="cashEntries" class="admin-list"></div>
+        </div>
+        <div class="admin-card">
+          <h2 class="admin-card-title">Mais vendidos</h2>
+          <div id="cashTopProducts"></div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Categorias do caixa</h2>
+        <form id="cashCategoryForm" class="admin-form-inline">
+          <input type="text" id="cashCategoryName" placeholder="Nova categoria" required />
+          <select id="cashCategoryKind">
+            <option value="expense">Despesa</option>
+            <option value="income">Entrada</option>
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm">Adicionar</button>
+        </form>
+        <div id="cashCategoryList" class="admin-list"></div>
+      </div>
+    </section>
+
+    <!-- ---------- Cardápio ---------- -->
+    <section id="tabCatalog" class="admin-tab-panel" hidden>
+      <p id="catalogMessage" class="admin-message"></p>
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Produtos</h2>
+        <p class="admin-sub">Toque num produto pra editar preços, tamanhos e adicionais.</p>
+        <button type="button" class="btn btn-primary btn-sm" id="newProductBtn">+ Novo produto</button>
+        <div id="productList" class="admin-list" style="margin-top:12px"></div>
+      </div>
+
+      <div class="admin-card" id="productEditor" hidden>
+        <h2 class="admin-card-title" id="productFormTitle">Novo produto</h2>
+        <form id="productForm" class="admin-form">
+          <input type="hidden" id="editingProductId" value="" />
+          <label class="field"><span>Nome</span><input type="text" id="productName" required /></label>
+          <label class="field"><span>Descrição</span><textarea id="productDescription" rows="3"></textarea></label>
+          <label class="field">
+            <span>Categoria</span>
+            <select id="productCategory"><option value="">Sem categoria</option></select>
+          </label>
+
+          <div class="editor-section">
+            <h3>Tamanhos e preços</h3>
+            <p class="admin-sub">Marque os tamanhos que esse produto tem. Sem nenhum tamanho marcado, vale o "preço único".</p>
+            <div id="productSizesEditor" class="size-price-list"></div>
+            <label class="field field-inline" id="productSinglePriceRow">
+              <span>Preço único (R$)</span>
+              <input type="number" id="productPrice" min="0" step="0.01" inputmode="decimal" />
+            </label>
+          </div>
+
+          <div class="editor-section">
+            <h3>Adicionais deste produto</h3>
+            <p class="admin-sub">
+              Marque os grupos que aparecem nesse produto. <strong>Grátis</strong> = quantos itens do grupo saem sem cobrar
+              (ex.: "2 frutas à sua escolha"); passando disso, cobra o preço do adicional.
+              <strong>Mín./Máx.</strong> = quantos o cliente pode escolher (deixe Máx. vazio pra não limitar).
+            </p>
+            <div id="productGroupsEditor"></div>
+          </div>
+
+          <div id="mediaPreview" class="admin-media-preview" hidden></div>
+          <label class="field"><span>Foto</span><input type="file" id="productImage" accept="image/png,image/jpeg,image/webp" /></label>
+          <label class="checkbox-row"><input type="checkbox" id="productAvailable" checked /><span>Disponível no cardápio</span></label>
+          <label class="checkbox-row"><input type="checkbox" id="productIsNew" /><span>Mostrar selo "NOVO!"</span></label>
+          <div class="product-form-actions">
+            <button type="submit" class="btn btn-primary" id="productFormSubmit">Salvar produto</button>
+            <button type="button" class="btn btn-outline btn-sm" id="cancelProductEditBtn">Fechar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Grupos de adicionais</h2>
+        <p class="admin-sub">
+          Biblioteca da loja: frutas, adicionais, caldas... Cada grupo pode ser usado em vários produtos. O preço vale pra
+          todos os tamanhos — se quiser um preço diferente por tamanho, use "preço por tamanho" no adicional.
+        </p>
+        <form id="groupForm" class="admin-form-inline">
+          <input type="text" id="groupName" placeholder="Nome do grupo (ex: Frutas)" required />
+          <button type="submit" class="btn btn-primary btn-sm">Criar grupo</button>
+        </form>
+        <div id="groupList"></div>
+      </div>
+
+      <div class="cash-grid">
+        <div class="admin-card">
+          <h2 class="admin-card-title">Categorias</h2>
+          <form id="categoryForm" class="admin-form-inline">
+            <input type="hidden" id="editingCategoryId" value="" />
+            <input type="text" id="categoryName" placeholder="Nome da categoria" required />
+            <button type="submit" class="btn btn-primary btn-sm" id="categoryFormSubmit">Adicionar</button>
+            <button type="button" class="btn btn-outline btn-sm" id="cancelCategoryEditBtn" hidden>Cancelar</button>
+          </form>
+          <div id="categoryList" class="admin-list"></div>
+        </div>
+
+        <div class="admin-card">
+          <h2 class="admin-card-title">Tamanhos</h2>
+          <form id="sizeForm" class="admin-form-inline">
+            <input type="hidden" id="editingSizeId" value="" />
+            <input type="text" id="sizeName" placeholder="Ex: 700ml" required />
+            <button type="submit" class="btn btn-primary btn-sm" id="sizeFormSubmit">Adicionar</button>
+            <button type="button" class="btn btn-outline btn-sm" id="cancelSizeEditBtn" hidden>Cancelar</button>
+          </form>
+          <div id="sizeList" class="admin-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- Configurações ---------- -->
+    <section id="tabSettings" class="admin-tab-panel" hidden>
+      <div class="admin-card">
+        <h2 class="admin-card-title">Configurações da loja</h2>
+        <form id="settingsForm" class="admin-form">
+          <label class="checkbox-row">
+            <input type="checkbox" id="settingStoreOpen" />
+            <span>Loja aberta (aceitando pedidos)</span>
+          </label>
+          <label class="field">
+            <span>Nome da loja</span>
+            <input type="text" id="settingStoreName" />
+          </label>
+          <div id="storeLogoPreview" class="admin-media-preview" hidden></div>
+          <label class="field">
+            <span>Logo da loja</span>
+            <input type="file" id="settingStoreLogo" accept="image/png,image/jpeg,image/webp" />
+          </label>
+          <label class="field">
+            <span>WhatsApp que recebe os pedidos</span>
+            <input type="text" id="settingWhatsapp" placeholder="Ex: (62) 98129-5475" />
+          </label>
+
+          <div class="editor-section">
+            <h3>Entrega</h3>
+            <div class="field-row">
+              <label class="field">
+                <span>Taxa de entrega</span>
+                <select id="settingDeliveryMode">
+                  <option value="gratis">Grátis</option>
+                  <option value="fixo">Taxa fixa</option>
+                </select>
+              </label>
+              <label class="field" id="deliveryFixedFeeField">
+                <span>Valor da taxa (R$)</span>
+                <input type="number" id="settingDeliveryFixedFee" min="0" step="0.01" />
+              </label>
+            </div>
+            <div class="field-row">
+              <label class="field">
+                <span>Cidade (já vem preenchida pro cliente)</span>
+                <input type="text" id="settingDeliveryCity" placeholder="Ex: Mara Rosa" />
+              </label>
+              <label class="field">
+                <span>Aviso no cardápio</span>
+                <input type="text" id="settingDeliveryNote" placeholder="Ex: Entrega grátis em Mara Rosa" />
+              </label>
+            </div>
+          </div>
+
+          <div class="editor-section">
+            <h3>Retirada</h3>
+            <label class="checkbox-row">
+              <input type="checkbox" id="settingPickupEnabled" />
+              <span>Cliente pode retirar na loja</span>
+            </label>
+            <label class="field">
+              <span>Endereço da loja (mostrado pra quem vai retirar)</span>
+              <input type="text" id="settingPickupAddress" placeholder="Rua, número, bairro" />
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Salvar configurações</button>
+        </form>
+        <p id="settingsMessage" class="admin-message"></p>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Horário de funcionamento</h2>
+        <p class="admin-sub">
+          Fora desse horário o site recusa pedidos automaticamente — mesmo com "loja aberta" marcado.
+        </p>
+        <form id="businessHoursForm" class="admin-form">
+          <div id="businessHoursList" class="business-hours-list"></div>
+          <button type="submit" class="btn btn-primary">Salvar horário</button>
+        </form>
+        <p id="businessHoursMessage" class="admin-message"></p>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Pedidos pelo WhatsApp</h2>
+        <p class="admin-sub">
+          Quando o cliente finaliza, o pedido aparece aqui no painel e o WhatsApp dele abre com a mensagem pronta
+          pro número acima — ele só toca em enviar. Pra avisar o cliente (preparando, saiu pra entrega, pronto),
+          use o botão <strong>💬 Avisar cliente</strong> no pedido: abre o seu WhatsApp com a mensagem pronta.<br><br>
+          <strong>Importante:</strong> o pedido aparece aqui como "Novo pedido" assim que o cliente toca em enviar — mas ele pode desistir no WhatsApp. Quando a mensagem chegar, toque em <strong>Aceitar</strong>: só aí ele conta como venda no Caixa. Se não chegou, toque em <strong>Não chegou</strong> (os esquecidos são cancelados sozinhos de madrugada).
+        </p>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-card-title">Impressão automática de comanda</h2>
+        <p class="admin-sub">
+          Faz o pedido sair sozinho na impressora térmica assim que chegar. Configuração única no computador onde a
+          impressora está ligada.
+        </p>
+        <div class="print-agent-status">
+          <span class="print-agent-dot" id="printAgentDot"></span>
+          <span id="printAgentStatusText">Verificando o agente...</span>
+        </div>
+        <ol class="print-agent-steps">
+          <li>
+            Confirme que a impressora está ligada, com o driver instalado e aparecendo em Configurações → Impressoras e
+            scanners do Windows.
+          </li>
+          <li>
+            <label class="field field-inline">
+              <span>Nome da impressora</span>
+              <input type="text" id="printAgentPrinterName" placeholder="em branco = detectar sozinho" />
+            </label>
+            <button type="button" id="savePrinterNameBtn" class="btn btn-outline btn-sm">Salvar nome</button>
+          </li>
+          <li><button type="button" id="downloadAgentConfigBtn" class="btn btn-primary btn-sm">Baixar impressão automática</button></li>
+          <li>
+            Extraia o .zip (botão direito → Extrair tudo) e dê 2 cliques em <code>iniciar.bat</code>. Ele se instala,
+            roda em segundo plano e volta sozinho quando o computador ligar.
+          </li>
+          <li>
+            <button type="button" id="printAgentTestBtn" class="btn btn-primary btn-sm">Testar impressão</button>
+            Uma comanda de teste deve sair em poucos segundos.
+          </li>
+        </ol>
+        <p id="printAgentMessage" class="admin-message"></p>
+      </div>
+    </section>
+  </section>
+
+</main>
+
+<!-- Lançamento do caixa -->
+<div id="cashEntryModal" class="modal" hidden>
+  <div class="modal-overlay" data-close-cash-modal></div>
+  <div class="modal-panel">
+    <button class="icon-btn modal-close" data-close-cash-modal aria-label="Fechar">×</button>
+    <h2 id="cashEntryTitle" class="admin-title">Lançar despesa</h2>
+    <form id="cashEntryForm" class="admin-form">
+      <input type="hidden" id="cashEntryId" />
+      <input type="hidden" id="cashEntryKind" />
+      <label class="field"><span>Valor (R$)</span><input type="number" id="cashEntryAmount" min="0.01" step="0.01" inputmode="decimal" required /></label>
+      <label class="field"><span>Categoria</span><select id="cashEntryCategory"></select></label>
+      <label class="field"><span>Descrição (opcional)</span><input type="text" id="cashEntryDescription" placeholder="Ex: 10 kg de açaí" /></label>
+      <div class="field-row">
+        <label class="field"><span>Data</span><input type="date" id="cashEntryDate" required /></label>
+        <label class="field">
+          <span>Pago / recebido em</span>
+          <select id="cashEntryPayment">
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">Pix</option>
+            <option value="cartao">Cartão</option>
+            <option value="outro">Outro</option>
+          </select>
+        </label>
+      </div>
+      <p id="cashEntryMessage" class="admin-message"></p>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-outline" data-close-cash-modal>Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module" src="js/admin.js"></script>
+<script type="module" src="js/admin-orders.js"></script>
+<script type="module" src="js/admin-cash.js"></script>
+</body>
+</html>

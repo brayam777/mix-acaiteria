@@ -1,0 +1,12 @@
+{
+  "name": "anotei-ai-print-agent",
+  "version": "1.0.0",
+  "description": "Agente local que imprime comanda automaticamente na impressora termica quando chega pedido novo no site.",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node agent.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

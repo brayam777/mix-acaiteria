@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finalizar pedido — Açaiteria</title>
+<meta name="theme-color" content="#5b2a86" />
+<link rel="icon" href="img/icon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-emoji" id="brandEmoji">🍇</span>
+      <img class="brand-logo-img" id="brandLogoImg" alt="" hidden />
+      <span class="brand-name" id="brandName">Açaiteria</span>
+    </a>
+    <a href="index.html" class="btn btn-outline btn-sm">Voltar ao cardápio</a>
+  </div>
+</header>
+
+<main class="container checkout-main">
+  <h1 class="section-title">Finalizar pedido</h1>
+
+  <div id="emptyCartNotice" class="checkout-card" hidden>
+    <p>Seu carrinho está vazio.</p>
+    <a href="index.html" class="btn btn-primary">Ver cardápio</a>
+  </div>
+
+  <form id="checkoutForm" class="checkout-grid" novalidate>
+    <div class="checkout-form-col">
+
+      <section class="checkout-card">
+        <h2>Seus dados</h2>
+        <label class="field">
+          <span>Nome</span>
+          <input type="text" id="customerName" required autocomplete="name" />
+        </label>
+        <label class="field">
+          <span>Telefone / WhatsApp</span>
+          <input type="tel" id="customerPhone" required autocomplete="tel" placeholder="(62) 99999-9999" />
+        </label>
+      </section>
+
+      <section class="checkout-card">
+        <h2>Entrega ou retirada?</h2>
+        <div class="fulfillment-options">
+          <label class="radio-card">
+            <input type="radio" name="fulfillmentType" value="delivery" checked />
+            <span>🛵 Entrega</span>
+          </label>
+          <label class="radio-card" id="pickupOption">
+            <input type="radio" name="fulfillmentType" value="pickup" />
+            <span>🏪 Retirar na loja</span>
+          </label>
+        </div>
+
+        <div id="pickupInfo" class="fulfillment-info"></div>
+
+        <div id="addressFields" class="address-fields">
+          <p id="deliveryInfo" class="checkout-hint good"></p>
+          <label class="field">
+            <span>Rua</span>
+            <input type="text" id="addressStreet" autocomplete="address-line1" />
+          </label>
+          <div class="field-row">
+            <div class="field-with-toggle">
+              <label class="field">
+                <span>Número</span>
+                <input type="text" id="addressNumber" placeholder="Nº" inputmode="numeric" />
+              </label>
+              <label class="checkbox-row-sm">
+                <input type="checkbox" id="addressNoNumber" />
+                <span>Sem número</span>
+              </label>
+            </div>
+            <label class="field">
+              <span>Bairro</span>
+              <input type="text" id="addressNeighborhood" />
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field">
+              <span>Cidade</span>
+              <input type="text" id="addressCity" autocomplete="address-level2" />
+            </label>
+            <label class="field">
+              <span>Complemento (opcional)</span>
+              <input type="text" id="addressComplement" placeholder="Casa, apto, bloco..." />
+            </label>
+          </div>
+          <label class="field">
+            <span>Ponto de referência (opcional)</span>
+            <input type="text" id="addressReference" />
+          </label>
+        </div>
+      </section>
+
+      <section class="checkout-card">
+        <h2>Forma de pagamento</h2>
+        <p class="checkout-hint">O pagamento é feito na entrega/retirada — aqui você só diz como vai pagar.</p>
+        <div class="payment-options">
+          <label class="radio-card">
+            <input type="radio" name="paymentMethod" value="pix_maquininha" checked />
+            <span>📱 PIX</span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="paymentMethod" value="cartao_maquininha" />
+            <span>💳 Cartão na maquininha</span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="paymentMethod" value="dinheiro" />
+            <span>💵 Dinheiro</span>
+          </label>
+        </div>
+
+        <div id="cashFields" class="cash-fields" hidden>
+          <label class="checkbox-row">
+            <input type="checkbox" id="needsChange" />
+            <span>Precisa de troco?</span>
+          </label>
+          <label class="field" id="changeForField" hidden>
+            <span>Troco para quanto?</span>
+            <input type="number" id="changeFor" min="0" step="0.01" inputmode="decimal" placeholder="Ex: 50" />
+          </label>
+        </div>
+      </section>
+
+      <section class="checkout-card">
+        <h2>Observações (opcional)</h2>
+        <textarea id="orderNotes" rows="3" placeholder="Ex: sem leite em pó, granola separada, tocar a campainha..."></textarea>
+      </section>
+    </div>
+
+    <div class="checkout-summary-col">
+      <section class="checkout-card checkout-summary">
+        <h2>Resumo do pedido</h2>
+        <div id="summaryItems" class="summary-items"></div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summarySubtotal">R$ 0,00</span>
+        </div>
+        <div class="summary-row" id="summaryDeliveryRow">
+          <span>Entrega</span>
+          <span id="summaryDeliveryFee">R$ 0,00</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span id="summaryTotal">R$ 0,00</span>
+        </div>
+        <p id="checkoutError" class="modal-error" hidden></p>
+        <button type="submit" id="submitOrderBtn" class="btn btn-whatsapp btn-block">Enviar pedido pelo WhatsApp</button>
+        <p class="checkout-hint" style="margin:10px 0 0;text-align:center">Vamos abrir seu WhatsApp com o pedido pronto — é só tocar em enviar.</p>
+      </section>
+    </div>
+  </form>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> <span id="footerStoreName">Açaiteria</span></span>
+    <span class="footer-brand-badge" id="brandBadge"></span>
+  </div>
+</footer>
+
+<script type="module" src="js/checkout.js"></script>
+</body>
+</html>
